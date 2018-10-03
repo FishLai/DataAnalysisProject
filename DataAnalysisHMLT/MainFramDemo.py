@@ -11,7 +11,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(640, 480)
+        MainWindow.setFixedSize(640, 480)
+        
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -56,7 +57,7 @@ class Ui_MainWindow(object):
         self.groupBox.setGeometry(QtCore.QRect(20, 50, 311, 211))
         self.groupBox.setObjectName("groupBox")
         self.checkBox = QtWidgets.QCheckBox(self.groupBox)
-        self.checkBox.setGeometry(QtCore.QRect(20, 20, 70, 20))
+        self.checkBox.setGeometry(QtCore.QRect(20, 20, 75, 20))
         self.checkBox.setObjectName("checkBox")
         self.Btn_dir = QtWidgets.QPushButton(self.centralwidget)
         self.Btn_dir.setGeometry(QtCore.QRect(250, 20, 21, 23))
@@ -84,6 +85,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -93,7 +95,7 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(0, _translate("MainWindow", "Output"))
         self.comboBox.setItemText(1, _translate("MainWindow", "transfer"))
         self.groupBox.setTitle(_translate("MainWindow", "Setup How to do"))
-        self.checkBox.setText(_translate("MainWindow", "Log(Ids)"))
+        self.checkBox.setText(_translate("MainWindow", "Log(y-axis)"))
         self.Btn_dir.setText(_translate("MainWindow", ".."))
         self.menu_File.setTitle(_translate("MainWindow", "&File"))
         self.menu_Help.setTitle(_translate("MainWindow", "&Help"))
