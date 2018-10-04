@@ -13,8 +13,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFileDialog,
                              QComboBox, QCheckBox)
 from PyQt5.Qt import QStandardItemModel, QStandardItem
 from MainFramDemo import Ui_MainWindow
-import IOfunctions
-from docutils.nodes import row
+import IOfunctions, PLOTfunctions
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -95,7 +94,7 @@ class MainWindow(QMainWindow):
                      "Vgs_range" : (float(Vgs_l), float(Vgs_u)),
                      "Vgs_Interval" : float(Vgs_in),
                      "iflog" : iflog}
-#         print(parameter)
+        print(parameter)
         
     def onChangePlotMode(self):
         self.mode = self.ui.comboBox.currentText()
@@ -119,7 +118,7 @@ class MainWindow(QMainWindow):
     def onEventClickBtn(self):
         onClicked = self.sender().objectName()
         if onClicked == "Btn_directory":
-            self.dir = QFileDialog.getExistingDirectory(self, 'choose directory', 'C:\\workspace\\Data\\180927', options = QFileDialog.ShowDirsOnly)
+            self.dir = QFileDialog.getExistingDirectory(self, 'choose directory', 'C:\\workspace\\Data_clone\\180927', options = QFileDialog.ShowDirsOnly)
             dir = self.dir
 #             print(dir == "")
             if dir != "":
