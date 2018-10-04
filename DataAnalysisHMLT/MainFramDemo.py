@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         self.groupBox.setObjectName("groupBox")
         self.checkBox = QtWidgets.QCheckBox(self.groupBox)
         self.checkBox.setGeometry(QtCore.QRect(20, 20, 75, 20))
-        self.checkBox.setObjectName("checkBox")
+        self.checkBox.setObjectName("log(y-axis)")
         self.Btn_dir = QtWidgets.QPushButton(self.centralwidget)
         self.Btn_dir.setGeometry(QtCore.QRect(250, 20, 21, 23))
         self.Btn_dir.setObjectName("Btn_directory")

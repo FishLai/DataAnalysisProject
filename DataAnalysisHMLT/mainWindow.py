@@ -10,10 +10,11 @@ import MainFramDemo
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFileDialog, 
                              QListView, QLineEdit, QLabel, QPushButton,
-                             QComboBox)
-from PyQt5.Qt import QStandardItemModel, QStandardItem, QComboBox
+                             QComboBox, QCheckBox)
+from PyQt5.Qt import QStandardItemModel, QStandardItem
 from MainFramDemo import Ui_MainWindow
 import IOfunctions
+from docutils.nodes import row
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -73,8 +74,32 @@ class MainWindow(QMainWindow):
         self.PushButtom1.setGeometry(QtCore.QRect(180, 180, 120, 20))
         self.PushButtom1.setObjectName("doDraw")
         self.PushButtom1.setText("show the Data Figure")
+        self.PushButtom1.clicked.connect(self.doDrawFigure)
+    def doDrawFigure(self):
+        Vds_u = self.ui.groupBox.findChild(QLineEdit, "Range_Vds]").text()
+        Vds_l = self.ui.groupBox.findChild(QLineEdit, "Range_Vds[").text()
+        Vgs_l = self.ui.groupBox.findChild(QLineEdit, "Range_Vgs[").text()
+        Vgs_u = self.ui.groupBox.findChild(QLineEdit, "Range_Vgs]").text()
+        Vgs_in = self.ui.groupBox.findChild(QLineEdit, "Interval_Vgs").text()
+        Vds_in = self.ui.groupBox.findChild(QLineEdit, "Interval_Vds").text()
+        iflog = self.ui.groupBox.findChild(QCheckBox, "log(y-axis)").isChecked()
+        ftable = self.ui.DataFileTable.model()
+        selectedFile = doCollectFile(ftable)
+#         print(selectedFile)
+        
+        parameter = {"directory" : self.dir,
+                     "experiment" : self.mode,
+                     "dataFile" : selectedFile,
+                     "Vds_range" : (float(Vds_l), float(Vds_u)),
+                     "Vds_Interval" : float(Vds_in),
+                     "Vgs_range" : (float(Vgs_l), float(Vgs_u)),
+                     "Vgs_Interval" : float(Vgs_in),
+                     "iflog" : iflog}
+#         print(parameter)
+        
     def onChangePlotMode(self):
-        mode = self.ui.comboBox.currentText()
+        self.mode = self.ui.comboBox.currentText()
+        mode = self.mode
         if mode == "transfer":
             self.ui.groupBox.findChild(QLineEdit, "Range_Vds[").setText("-1")
             self.ui.groupBox.findChild(QLineEdit, "Range_Vds]").setText("1")
@@ -90,14 +115,16 @@ class MainWindow(QMainWindow):
             self.ui.groupBox.findChild(QLineEdit, "Range_Vgs]").setText("60")
             self.ui.groupBox.findChild(QLineEdit, "Interval_Vgs").setText("10")
             
+     
     def onEventClickBtn(self):
         onClicked = self.sender().objectName()
         if onClicked == "Btn_directory":
-            dir = QFileDialog.getExistingDirectory(self, 'choose directory', './', options = QFileDialog.ShowDirsOnly)
+            self.dir = QFileDialog.getExistingDirectory(self, 'choose directory', 'C:\\workspace\\Data\\180927', options = QFileDialog.ShowDirsOnly)
+            dir = self.dir
 #             print(dir == "")
             if dir != "":
                 self.ui.IBx_dir.setText(dir)
-                self.dfiles = IOfunctions.showDataFiles(dir)            
+                self.dfiles = IOfunctions.showDataFiles(dir) 
 #             print(self.dfiles)
             #need a function to show data files
                 model = showDataFile(self.dfiles, self.ui.DataFileTable)
@@ -110,13 +137,22 @@ def showDataFile(dFileList, view):
         item = QStandardItem(df)
         item.setCheckable(True)
         model.appendRow(item)
-    return model    
-    
-        
+    return model
+  
+def doCollectFile(model):
+    fileList = []
+    for row in range(model.rowCount()):
+        isChecked = model.item(row, 0).checkState() == QtCore.Qt.Checked
+#         print(isChecked, row)
+        if isChecked :
+            fn = model.item(row, 0).text()
+            fileList.append(fn)
+    return fileList    
 if __name__ == '__main__':
     import sys
     
     app = QtWidgets.QApplication(sys.argv)
     ui = MainWindow()
+    ui.setWindowTitle("break away duplicating copy hell")
     ui.show()
     sys.exit(app.exec_())
