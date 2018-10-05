@@ -118,7 +118,7 @@ class MainWindow(QMainWindow):
     def onEventClickBtn(self):
         onClicked = self.sender().objectName()
         if onClicked == "Btn_directory":
-            self.dir = QFileDialog.getExistingDirectory(self, 'choose directory', 'C:\\workspace\\Data_clone\\180927', options = QFileDialog.ShowDirsOnly)
+            self.dir = QFileDialog.getExistingDirectory(self, 'choose directory', 'C:\\workspace\\Data\\180927', options = QFileDialog.ShowDirsOnly)
             dir = self.dir
 #             print(dir == "")
             if dir != "":

@@ -8,5 +8,5 @@ import IOfunctions
 
 def plotOutput(paras, *args, **keyargs):
     path = "C:/workspace/Data_clone/180927/MoTe2_hBN_Vg60_output_Vd-11_200point.csv"
-    data = IOfunctions.loadData(path)
+    data = IOfunctions.tidiedData(path, paras)
     
