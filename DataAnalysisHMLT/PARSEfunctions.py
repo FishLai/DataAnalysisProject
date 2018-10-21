@@ -24,7 +24,7 @@ def tidyData(path, parameters):
         tidiedData = doTidyForOutput(untidyData, index_Vd = index_Vd, 
                                      index_Vg = index_Vg, index_Id = index_Id)
         return tidiedData
-    print('markPosition' in globals())    
+#     print('markPosition' in globals())    
     if parameters['experiment'] == 'Output':
         doMarkForOutput(untidyData,path = path, para = parameters, 
                             index_Vd = index_Vd)
@@ -34,10 +34,26 @@ def tidyData(path, parameters):
 def doTidyForOutput(data, **kws):
     index_Vd = kws['index_Vd']
     index_Vg = kws['index_Vg']
-    indes_Id = kws['index_Id']
+    index_Id = kws['index_Id']
     mark_dataBegins = globals()['markPosition'][1]
     mark_inOne = globals()['markPosition'][0]
-    pass
+    i_vd_begin = mark_inOne[0]
+    tidiedData = globals()['tidiedData']
+    for i_vg, vg in mark_dataBegins:
+        i_vd = i_vd_begin
+        tidiedData[0].append('Id(Vg' + vg +')')
+        print(tidiedData)
+        for row in tidiedData[1:len(tidiedData)]:
+            row.append(data[i_vd][index_Id])
+            i_vd += 1
+        rowIndex = mark_dataBegins.index([i_vg, vg])
+        if rowIndex == len(mark_dataBegins)-1:
+            globals()['tidiedData'] = tidiedData
+            print(len(tidiedData))
+#             for row in globals()['tidiedData']:
+#                 print(row)
+            break
+        i_vd_begin = mark_dataBegins[rowIndex+1][0] + (i_vd_begin - i_vg)
 
 '''
     mark the begin, middle and end index
@@ -51,6 +67,7 @@ def doMarkForOutput(data, **kwargs):
     r_Vd = para['Vds_range']
     in_Vd = para['Vds_Interval']
 #     print(r_Vd[0])
+    col_Vd = None
     for i in range(1, len(data)):
         '''
                 calculate the interval between adjacent data
@@ -72,7 +89,14 @@ def doMarkForOutput(data, **kwargs):
         upSubstraction = round(abs(upSubstraction), 4)
         downSubstraction = round(abs(downSubstraction), 4)
         '''
+            construct Vd values
+        '''
+        if col_Vd != None:
+            col_Vd.append([data[i][index_Vd]])
+        
+        '''
             figure out the position row about beginning, middle and end
+            And create Vd data 
         '''
         if (VdValue == r_Vd[1]
                 and upSubstraction != in_Vd
@@ -81,13 +105,17 @@ def doMarkForOutput(data, **kwargs):
             part_act = 'downstair'
             begin_row = i
             globals()['markPosition'] = [[begin_row, part_act]]            #mark the special row index in Data
+            col_Vd = [['Vd']]
+            col_Vd.append([data[i][index_Vd]])
         elif (VdValue == r_Vd[0]
                 and upSubstraction != in_Vd
                 and downSubstraction == in_Vd
                 ):
             part_act = 'upstair'
-            begin_row = i
+            begin_row = i            
             globals()['markPosition'] = [[begin_row, part_act]]
+            col_Vd = [['Vd']]
+            col_Vd.append([data[i][index_Vd]])
         elif ((VdValue == r_Vd[0] or VdValue == r_Vd[1])
                 and upSubstraction == in_Vd
                 and downSubstraction == in_Vd):
@@ -96,6 +124,7 @@ def doMarkForOutput(data, **kwargs):
         elif upSubstraction == in_Vd and downSubstraction != in_Vd:
             end_row = i
             globals()['markPosition'][0].append(end_row)
+            globals()['tidiedData'] = col_Vd
             break
     tidyData(path, para)
 def doMarkForTransfer():
