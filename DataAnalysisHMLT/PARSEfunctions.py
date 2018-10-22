@@ -22,7 +22,7 @@ def tidyData(path, parameters):
         globals()['markPosition'].append(markDataBegin)
         print(globals()['markPosition'])
         tidiedData = doTidyForOutput(untidyData, index_Vd = index_Vd, 
-                                     index_Vg = index_Vg, index_Id = index_Id)
+                                     index_Vg = index_Vg, index_Id = index_Id, directory = parameters['directory'])
         return tidiedData
 #     print('markPosition' in globals())    
     if parameters['experiment'] == 'Output':
@@ -35,6 +35,7 @@ def doTidyForOutput(data, **kws):
     index_Vd = kws['index_Vd']
     index_Vg = kws['index_Vg']
     index_Id = kws['index_Id']
+    dir = kws['directory']
     mark_dataBegins = globals()['markPosition'][1]
     mark_inOne = globals()['markPosition'][0]
     i_vd_begin = mark_inOne[0]
@@ -49,7 +50,8 @@ def doTidyForOutput(data, **kws):
         rowIndex = mark_dataBegins.index([i_vg, vg])
         if rowIndex == len(mark_dataBegins)-1:
             globals()['tidiedData'] = tidiedData
-            print(len(tidiedData))
+            IOfunctions.saveCSV(dir)
+#             print(len(tidiedData))
 #             for row in globals()['tidiedData']:
 #                 print(row)
             break

@@ -5,7 +5,8 @@ Created on 2018/9/30
 
 181003, I think I will implement a function for tidy data
 '''
-import os, fnmatch, csv
+import os, fnmatch, csv 
+from datetime import datetime as dd
 
 
 def showDataFiles(directory):
@@ -26,6 +27,16 @@ def loadData(path):
 #                 print(row)
                 data.append(row)
     return data
+def saveCSV(directory):
+    if 'tidiedData' in globals():
+        dir = directory
+        today = dd.now().strftime("%y%m%d")
+        mkpath = dir + '/' + today + 'tidied'
+        os.mkdir(mkpath)
+        dir = mkpath
+        open()
+        pass
+    pass
 if __name__ == "__main__":
     dir = "C:/workspace/Data/180927/MoTe2_hBN_Vg60_output_Vd-11_200point.csv"
     parameters = {'directory': 'C:/workspace/Data/180927',
