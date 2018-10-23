@@ -3,8 +3,11 @@ FishLai created 18/10/06
 '''
 import IOfunctions
 
-def tidyData(path, parameters):
-    untidyData = IOfunctions.loadData(path)
+def tidyData(parameters):
+    para = parameters
+    dir = para['directory']
+    files = para['dataFile']
+    untidyData = IOfunctions.loadData(dir, files)
     dataHead = untidyData[0]
 #     print(dataHead)
     for head in dataHead:
@@ -22,11 +25,11 @@ def tidyData(path, parameters):
         globals()['markPosition'].append(markDataBegin)
         print(globals()['markPosition'])
         tidiedData = doTidyForOutput(untidyData, index_Vd = index_Vd, 
-                                     index_Vg = index_Vg, index_Id = index_Id, directory = parameters['directory'])
+                                     index_Vg = index_Vg, index_Id = index_Id, directory = dir)
         return tidiedData
 #     print('markPosition' in globals())    
     if parameters['experiment'] == 'Output':
-        doMarkForOutput(untidyData,path = path, para = parameters, 
+        doMarkForOutput(untidyData, para = parameters, 
                             index_Vd = index_Vd)
     if parameters['experiment'] == 'transfer':
         doMarkForTransfer() #Not implement
@@ -128,7 +131,7 @@ def doMarkForOutput(data, **kwargs):
             globals()['markPosition'][0].append(end_row)
             globals()['tidiedData'] = col_Vd
             break
-    tidyData(path, para)
+    tidyData(para)
 def doMarkForTransfer():
     pass
 '''
@@ -156,7 +159,7 @@ def doMarkDataBegin(data, parameters, **kws):
 if __name__ == "__main__":
     #output [(1) ; 9_27_2018 1_42_00 PM]
     #MoTe2_hBN_Vg60_output_Vd-11_200point
-    dir = "C:/workspace/Data/180927/output [(1) ; 9_27_2018 1_42_00 PM].csv"
+#     dir = "C:/workspace/Data/180927/output [(1) ; 9_27_2018 1_42_00 PM].csv"
     parameters = {'directory': 'C:/workspace/Data/180927',
                   'experiment': 'Output',
                   'dataFile': ['MoTe2_hBN_Vg60_output_Vd-11_200point.csv', 
@@ -167,4 +170,4 @@ if __name__ == "__main__":
                   'Vgs_range': (-60.0, 60.0), 
                   'Vgs_Interval': 10.0, 
                   'iflog': True}
-    tidyData(dir, parameters)
+    tidyData(parameters)

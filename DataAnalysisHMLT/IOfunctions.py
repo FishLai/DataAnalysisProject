@@ -16,7 +16,8 @@ def showDataFiles(directory):
     dfiles = fnmatch.filter(files, '*.csv')
 #     print(dfiles)
     return dfiles
-def loadData(path):
+def loadData(directory, files):
+    path = ""
     with open(path, newline="") as dfile:
         dataReader = csv.reader(dfile)
         data = []
