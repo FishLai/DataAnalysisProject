@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFileDialog,
                              QComboBox, QCheckBox)
 from PyQt5.Qt import QStandardItemModel, QStandardItem
 from MainFramDemo import Ui_MainWindow
-import IOfunctions, PLOTfunctions
+import IOfunctions, PLOTfunctions, PARSEfunctions
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -95,6 +95,7 @@ class MainWindow(QMainWindow):
                      "Vgs_Interval" : float(Vgs_in),
                      "iflog" : iflog}
         print(parameter)
+        PARSEfunctions.tidyData(parameter)
         
     def onChangePlotMode(self):
         self.mode = self.ui.comboBox.currentText()
@@ -109,7 +110,7 @@ class MainWindow(QMainWindow):
         elif mode == "Output":
             self.ui.groupBox.findChild(QLineEdit, "Range_Vds[").setText("-1")
             self.ui.groupBox.findChild(QLineEdit, "Range_Vds]").setText("1")
-            self.ui.groupBox.findChild(QLineEdit, "Interval_Vds").setText("0.05")
+            self.ui.groupBox.findChild(QLineEdit, "Interval_Vds").setText("0.005")
             self.ui.groupBox.findChild(QLineEdit, "Range_Vgs[").setText("-60")
             self.ui.groupBox.findChild(QLineEdit, "Range_Vgs]").setText("60")
             self.ui.groupBox.findChild(QLineEdit, "Interval_Vgs").setText("10")
@@ -128,6 +129,8 @@ class MainWindow(QMainWindow):
             #need a function to show data files
                 model = showDataFile(self.dfiles, self.ui.DataFileTable)
                 self.ui.DataFileTable.setModel(model)
+        
+            
 
 def showDataFile(dFileList, view):
     fs = dFileList

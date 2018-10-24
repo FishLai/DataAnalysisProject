@@ -17,26 +17,44 @@ def showDataFiles(directory):
 #     print(dfiles)
     return dfiles
 def loadData(directory, files):
-    path = ""
-    with open(path, newline="") as dfile:
-        dataReader = csv.reader(dfile)
-        data = []
+    allData = []
+    for fn in files:
+        path = os.path.join(directory, fn)
+        with open(path, newline="") as dfile:
+            dataReader = csv.reader(dfile)
+            data = []
+            dataHead = 0
+            for row in dataReader:
+                if dataHead == 1 or list(set(row).intersection(set(['Vd', 'Vg', 'Id']))) != []:
+                    dataHead = 1
+    #                 print(row)
+                    data.append(row)
         dataHead = 0
-        for row in dataReader:
-            if dataHead == 1 or list(set(row).intersection(set(['Vd', 'Vg', 'Id']))) != []:
-                dataHead = 1
-#                 print(row)
-                data.append(row)
-    return data
-def saveCSV(directory):
+        '''
+            collect the dataes in one list
+        '''
+        if allData == []:
+            allData += data            
+        else:
+            allData += data[1:len(data)]   
+    return allData
+def saveCSV(parameters, *args):
+    globals()['tidiedData']=args[0]
     if 'tidiedData' in globals():
-        dir = directory
+        para = parameters
+        dir = para['directory']
         today = dd.now().strftime("%y%m%d")
-        mkpath = dir + '/' + today + 'tidied'
-        os.mkdir(mkpath)
-        dir = mkpath
-        open()
-        pass
+        mkpath = dir + '/' + today + 'Tidied'
+        
+        if os.path.isdir(mkpath) != True:
+            os.mkdir(mkpath)
+        time = dd.now().strftime("%H%M%S")
+        fn = time + '_' + para['experiment'] + '.csv'
+        newfile = mkpath + '/' + fn
+        with open(newfile, 'w', newline='') as newfn:
+            writer = csv.writer(newfn)
+            writer.writerows(globals()['tidiedData'])
+        
     pass
 if __name__ == "__main__":
     dir = "C:/workspace/Data/180927/MoTe2_hBN_Vg60_output_Vd-11_200point.csv"

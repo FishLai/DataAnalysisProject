@@ -5,29 +5,42 @@ import IOfunctions
 
 def tidyData(parameters):
     para = parameters
-    dir = para['directory']
+    fdir = para['directory']
     files = para['dataFile']
-    untidyData = IOfunctions.loadData(dir, files)
-    dataHead = untidyData[0]
-#     print(dataHead)
-    for head in dataHead:
-        if set(list('Vd')) <= set(list(head)):
-            index_Vd = dataHead.index(head)
-        elif set(list('Vg')) <= set(list(head)):
-            index_Vg = dataHead.index(head)
-        elif set(list('Id')) <= set(list(head)):
-            index_Id = dataHead.index(head)
+    untidyData = IOfunctions.loadData(fdir, files)
             
     if ('markPosition' in globals()
             and parameters['experiment'] == 'Output'):
+        dataHead = globals()['untidyData'][0]
+#     print(dataHead)
+        for head in dataHead:
+            if set(list('Vd')) <= set(list(head)):
+                index_Vd = dataHead.index(head)
+            elif set(list('Vg')) <= set(list(head)):
+                index_Vg = dataHead.index(head)
+            elif set(list('Id')) <= set(list(head)):
+                index_Id = dataHead.index(head)        
+        
         markDataBegin = doMarkDataBegin(untidyData, parameters, 
                                         index_Vd = index_Vd, index_Vg = index_Vg)
         globals()['markPosition'].append(markDataBegin)
         print(globals()['markPosition'])
-        tidiedData = doTidyForOutput(untidyData, index_Vd = index_Vd, 
-                                     index_Vg = index_Vg, index_Id = index_Id, directory = dir)
+        tidiedData = doTidyForOutput(untidyData, index_Id = index_Id)
+        IOfunctions.saveCSV(para, globals()['tidiedData'])
         return tidiedData
-#     print('markPosition' in globals())    
+    else:
+        globals()['untidyData'] = IOfunctions.loadData(fdir, files)
+        dataHead = globals()['untidyData'][0]
+#     print(dataHead)
+        for head in dataHead:
+            if set(list('Vd')) <= set(list(head)):
+                index_Vd = dataHead.index(head)
+            elif set(list('Vg')) <= set(list(head)):
+                index_Vg = dataHead.index(head)
+            elif set(list('Id')) <= set(list(head)):
+                index_Id = dataHead.index(head)        
+#     print('markPosition' in globals())
+    
     if parameters['experiment'] == 'Output':
         doMarkForOutput(untidyData, para = parameters, 
                             index_Vd = index_Vd)
@@ -35,10 +48,7 @@ def tidyData(parameters):
         doMarkForTransfer() #Not implement
 
 def doTidyForOutput(data, **kws):
-    index_Vd = kws['index_Vd']
-    index_Vg = kws['index_Vg']
     index_Id = kws['index_Id']
-    dir = kws['directory']
     mark_dataBegins = globals()['markPosition'][1]
     mark_inOne = globals()['markPosition'][0]
     i_vd_begin = mark_inOne[0]
@@ -53,7 +63,6 @@ def doTidyForOutput(data, **kws):
         rowIndex = mark_dataBegins.index([i_vg, vg])
         if rowIndex == len(mark_dataBegins)-1:
             globals()['tidiedData'] = tidiedData
-            IOfunctions.saveCSV(dir)
 #             print(len(tidiedData))
 #             for row in globals()['tidiedData']:
 #                 print(row)
@@ -64,7 +73,6 @@ def doTidyForOutput(data, **kws):
     mark the begin, middle and end index
 '''
 def doMarkForOutput(data, **kwargs):
-    path = kwargs['path']
     para = kwargs['para']
     index_Vd = kwargs['index_Vd']
 #     index_Vg = kwargs['index_Vg']
@@ -91,8 +99,8 @@ def doMarkForOutput(data, **kwargs):
             upSubstraction = float(data[i][index_Vd]) - float(data[i-1][index_Vd])
             downSubstraction = float(data[i+1][index_Vd]) - float(data[i][index_Vd])            
 #         print(round(abs(upSubstraction), 4), round(abs(downSubstraction), 4))
-        upSubstraction = round(abs(upSubstraction), 4)
-        downSubstraction = round(abs(downSubstraction), 4)
+        upSubstraction = round(abs(upSubstraction), 5)
+        downSubstraction = round(abs(downSubstraction), 5)
         '''
             construct Vd values
         '''
@@ -101,7 +109,6 @@ def doMarkForOutput(data, **kwargs):
         
         '''
             figure out the position row about beginning, middle and end
-            And create Vd data 
         '''
         if (VdValue == r_Vd[1]
                 and upSubstraction != in_Vd
@@ -139,13 +146,11 @@ def doMarkForTransfer():
     mark the experiment start point
 '''
 def doMarkDataBegin(data, parameters, **kws):
-    index_Vd = kws['index_Vd']
     index_Vg = kws['index_Vg']
     para = parameters
     markedDataBegin = []
     if para['experiment'] == 'Output':
         Vg_value = None
-        Vg_values = []
         for row in data[1:len(data)]:
             if row[index_Vg] != Vg_value:
                 rowIndex = data.index(row)
@@ -161,13 +166,9 @@ if __name__ == "__main__":
     #MoTe2_hBN_Vg60_output_Vd-11_200point
 #     dir = "C:/workspace/Data/180927/output [(1) ; 9_27_2018 1_42_00 PM].csv"
     parameters = {'directory': 'C:/workspace/Data/180927',
-                  'experiment': 'Output',
-                  'dataFile': ['MoTe2_hBN_Vg60_output_Vd-11_200point.csv', 
-                               'output [(4) ; 9_27_2018 12_13_01 PM].csv', 
-                               'output [(5) ; 9_27_2018 12_16_33 PM].csv'], 
-                  'Vds_range': (-1.0, 1.0), 
-                  'Vds_Interval': 0.005, 
-                  'Vgs_range': (-60.0, 60.0), 
-                  'Vgs_Interval': 10.0, 
-                  'iflog': True}
+                   'experiment': 'Output',
+                    'dataFile': ['output [(10) ; 9_27_2018 12_30_55 PM].csv', 'output [(11) ; 9_27_2018 12_33_07 PM].csv'],
+                     'Vds_range': (-1.0, 1.0), 'Vds_Interval': 0.005,
+                      'Vgs_range': (-60.0, 60.0),
+                       'Vgs_Interval': 10.0, 'iflog': True}
     tidyData(parameters)
