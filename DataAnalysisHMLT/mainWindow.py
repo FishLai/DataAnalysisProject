@@ -6,13 +6,13 @@ dFileList -> list of data files
 Range_Vds[ -> floor of Vds 
 """
 
-import MainFramDemo
+import MainFramDemo2
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFileDialog, 
                              QListView, QLineEdit, QLabel, QPushButton,
                              QComboBox, QCheckBox)
 from PyQt5.Qt import QStandardItemModel, QStandardItem
-from MainFramDemo import Ui_MainWindow
+from MainFramDemo2 import Ui_MainWindow
 import IOfunctions, PLOTfunctions, PARSEfunctions
 
 class MainWindow(QMainWindow):
