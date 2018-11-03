@@ -25,7 +25,10 @@ def loadData(directory, files):
             data = []
             dataHead = 0
             for row in dataReader:
-                if dataHead == 1 or list(set(row).intersection(set(['Vd', 'Vg', 'Id']))) != []:
+                if (dataHead == 1 
+                    or list(set(row).intersection(set(['Vd', 'Vg', 'Id']))) != []
+                    or list(set(row).instersection(set([' Vd', ' Vg', ' Id']))) !=[]):
+                    
                     dataHead = 1
     #                 print(row)
                     data.append(row)
@@ -55,7 +58,6 @@ def saveCSV(parameters, *args):
             writer = csv.writer(newfn)
             writer.writerows(globals()['tidiedData'])
         
-    pass
 if __name__ == "__main__":
     dir = "C:/workspace/Data/180927/MoTe2_hBN_Vg60_output_Vd-11_200point.csv"
     parameters = {'directory': 'C:/workspace/Data/180927',

@@ -8,8 +8,8 @@ import sys
 from cx_Freeze import setup, Executable
 
 build_exe_options = {'build_exe':{
-                          'includes':['atexit', 'IOfunctions', 'MainFramDemo',
-                                      'PARSEfunctions'
+                          'includes':['atexit', 'IOfunctions', 'MainFramDemo2',
+                                      'PARSEfunctions2'
                                       ],
                           'path' : sys.path
                             }
@@ -18,7 +18,7 @@ base = None
 if sys.platform =="win32":
     base = "Win32GUI"
 setup( name = "AnalysisData",
-       version = '1.0',
+       version = '2.0',
        description = "tidy transfer and output data only",
        options = build_exe_options,
-       executables = [Executable("mainWindow.py", base=base)])
+       executables = [Executable("mainWindow2.py", base=base, targetName="AnalysisData-v2.exe")])
