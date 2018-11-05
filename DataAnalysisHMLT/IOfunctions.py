@@ -9,6 +9,14 @@ import os, fnmatch, csv
 from datetime import datetime as dd
 
 
+def loadTidiedData(**kwgs):
+    dir = kwgs['directory']
+    fn = kwgs['file']
+    path = os.path.join(dir, fn)
+    with open(path, newline='') as csvfile:
+        dictData = csv.reader(csvfile)
+        dictData = list(dictData)    
+    return dictData
 def showDataFiles(directory):
     d = directory
 #     print(d)
