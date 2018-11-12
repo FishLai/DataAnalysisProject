@@ -33,10 +33,11 @@ def loadData(directory, files):
             data = []
             dataHead = 0
             for row in dataReader:
+                if 'DataName' in row:
+                    data = []
                 if (dataHead == 1 
                     or list(set(row).intersection(set(['Vd', 'Vg', 'Id']))) != []
-                    or list(set(row).instersection(set([' Vd', ' Vg', ' Id']))) !=[]):
-                    
+                    or list(set(row).intersection(set([' Vd', ' Vg', ' Id']))) !=[]):
                     dataHead = 1
     #                 print(row)
                     data.append(row)
@@ -47,7 +48,7 @@ def loadData(directory, files):
         if allData == []:
             allData += data            
         else:
-            allData += data[1:len(data)]   
+            allData += data[1:len(data)]
     return allData
 def saveCSV(parameters, *args):
     globals()['tidiedData']=args[0]
@@ -78,3 +79,4 @@ if __name__ == "__main__":
                   'Vgs_range': (-60.0, 60.0), 
                   'Vgs_Interval': 10.0, 
                   'iflog': True}
+    loadData("C:/workspace/Data/test data/YYY", ['S1DB transfer.csv'])

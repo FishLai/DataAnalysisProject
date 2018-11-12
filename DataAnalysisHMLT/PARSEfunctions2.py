@@ -15,12 +15,11 @@ def tidyData(parameters):
         dataHead = globals()['untidyData'][0]
 #     print(dataHead)
         for head in dataHead:
-            head = head.lstrip()
-            if set(list('Vd')) <= set(list(head)):
+            if 'Vd' in head:
                 index_Vd = dataHead.index(head)
-            elif set(list('Vg')) <= set(list(head)):
+            elif 'Vg' in head:
                 index_Vg = dataHead.index(head)
-            elif set(list('Id')) <= set(list(head)):
+            elif 'Id' in head:
                 index_Id = dataHead.index(head)        
         doMarkDataBegin(untidyData, para, index_Vd = index_Vd, index_Vg = index_Vg)
         tidiedData = doTidyData(experiment = para['experiment'], index_Id = index_Id)
@@ -35,12 +34,11 @@ def tidyData(parameters):
         untidyData = globals()['untidyData']
         dataHead = globals()['untidyData'][0]
         for head in dataHead:
-            head = head.lstrip()
-            if set(list('Vd')) <= set(list(head)):
+            if 'Vd' in head:
                 index_Vd = dataHead.index(head)
-            elif set(list('Vg')) <= set(list(head)):
+            elif 'Vg' in head:
                 index_Vg = dataHead.index(head)
-            elif set(list('Id')) <= set(list(head)):
+            elif 'Id' in head:
                 index_Id = dataHead.index(head)        
 #     print('markPosition' in globals())
     
@@ -189,11 +187,13 @@ if __name__ == "__main__":
     #output [(1) ; 9_27_2018 1_42_00 PM]
     #MoTe2_hBN_Vg60_output_Vd-11_200point
 #     dir = "C:/workspace/Data/180927/output [(1) ; 9_27_2018 1_42_00 PM].csv"
-    parameters = {'directory': 'C:/workspace/Data/180927',
-                  'experiment': 'Output', 
-                  'dataFile': ['output [(8) ; 9_27_2018 12_24_36 PM].csv'],
-                  'V_range': (-1, 1),
-                  'V_Interval': 0.005,
-                  'iflog': True}
+    parameters = {'directory': 'C:/workspace/Data/test data/YYY', 
+                  'experiment': 'transfer', 
+                  'dataFile': ['S1DB transfer.csv'], 
+                  'V_range': (-60.0, 60.0), 
+                  'V_Interval': 0.5, 
+                  'iflog': True
+                  }
+
 
     tidyData(parameters)

@@ -3,7 +3,7 @@ Created on Nov 4, 2018
 
 @author: quan_
 '''
-import IOfunctions, fnmatch, re
+import IOfunctions, re
 
 def tidyForTempDepend(directory):
     fns = IOfunctions.showDataFiles(directory)
@@ -17,8 +17,62 @@ def tidyForTempDepend(directory):
                                 experiment = exp,
                                 temperature = temp
                                )
-    for row in globals()['dictData']['transfer']['(Vd1.5)']['forward']:
-        print(row['Vg_downstair']+', '+row['Id(300K)'])
+    try:
+        allData = globals()['dictData']
+    except:
+        print('there is no collected data')
+    exps = list(allData.keys())
+    for exp in exps:
+        Vconsts = list(allData[exp].keys())
+        for Vconst in Vconsts:
+            datas = allData[exp][Vconst]
+            data_f = datas['forward']
+            data_b = datas['backward']
+            data = doCombineFandB(data_f, data_b) ##Combine forward and backward in a file
+            para = {'directory':directory,
+                    'experiment':exp + '_' + Vconst + '_temperature-depend',
+                    }
+            IOfunctions.saveCSV(para, data)
+    globals().pop('dictData', None)
+    return "Down"
+
+def doCombineFandB(fowardData, backwardData):
+    f = fowardData
+    fhs = list(f[0].keys())
+    b = backwardData
+    bhs = list(b[0].keys())
+    V_fh = ([fh 
+           for fh in fhs 
+           if 'V' in fh][0]
+           )
+    V_bh = ([bh
+           for bh in bhs
+           if 'V' in bh][0])
+    heads = [V_fh]
+    pat = re.compile('\((\d+\.*\d*)K')
+    I_heads = [h for h in fhs if 'V' not in h]
+    for i, I_head in enumerate(I_heads[0:len(I_heads)-1]):
+        for j, I_head2 in enumerate(I_heads[i+1:len(I_heads)]):
+            temp = int(re.search(pat, I_head).group(1))
+            temp2 = int(re.search(pat, I_head2).group(1))
+            if temp > temp2:
+                big = I_head
+                I_heads[i] = I_head2
+                I_head = I_head2
+                I_heads[j] = big
+    heads = heads + I_heads + [V_bh] + I_heads
+    i_back = heads.index(V_bh)
+    data = [heads]
+    for i, row_f in enumerate(f):
+        row_b = b[i]
+        row = []
+        for j, head in enumerate(heads):
+            if j < i_back:
+                row.append(row_f[head])
+            else:
+                row.append(row_b[head])
+        data.append(row)
+    return data
 def doConvertListToDictData(**kwgs):
     dir = kwgs['directory']
     fn = kwgs['file']
@@ -133,6 +187,6 @@ def doConvertListToDictData(**kwgs):
     return True
 
 if __name__ == '__main__':
-    dir = "C:\\workspace\\Data\\181104\\Temperature-depend\\transfer"
+    dir = "C:\\workspace\\Data\\181007\\181111Tidied"
     tidyForTempDepend(dir)
     pass
