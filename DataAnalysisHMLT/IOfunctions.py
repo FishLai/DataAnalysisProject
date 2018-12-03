@@ -61,7 +61,11 @@ def saveCSV(parameters, *args):
         if os.path.isdir(mkpath) != True:
             os.mkdir(mkpath)
         time = dd.now().strftime("%H%M%S")
-        fn = time + '_' + para['experiment'] + '.csv'
+        fn = (time + '_' 
+              + para['experiment'] + '_' 
+              + para['sample'] + '_' 
+              + para['temperature'] + '.csv'
+            )
         newfile = mkpath + '/' + fn
         with open(newfile, 'w', newline='') as newfn:
             writer = csv.writer(newfn)

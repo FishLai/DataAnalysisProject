@@ -12,8 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.setFixedSize(640, 480)
-        
+        MainWindow.setMinimumSize(980, 480)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -23,14 +22,14 @@ class Ui_MainWindow(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
-        self.scrollArea.setGeometry(QtCore.QRect(20, 50, 241, 381))
+        self.scrollArea.setGeometry(QtCore.QRect(20, 50, 592, 382))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 239, 379))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 590, 380))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.DataFileTable = QtWidgets.QListView(self.scrollAreaWidgetContents)
-        self.DataFileTable.setGeometry(QtCore.QRect(10, 10, 219, 359))
+        self.DataFileTable.setGeometry(QtCore.QRect(10, 10, 570, 360))
         self.DataFileTable.setObjectName("DataFileTable")
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -38,7 +37,7 @@ class Ui_MainWindow(object):
         self.IBx_dir.setGeometry(QtCore.QRect(100, 20, 151, 20))
         self.IBx_dir.setObjectName("IBx_dir")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(270, 50, 351, 381))
+        self.frame.setGeometry(QtCore.QRect(620, 50, 351, 381))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -50,9 +49,8 @@ class Ui_MainWindow(object):
         self.groupBox = QtWidgets.QGroupBox(self.frame)
         self.groupBox.setGeometry(QtCore.QRect(20, 50, 311, 211))
         self.groupBox.setObjectName("groupBox")
-        self.checkBox = QtWidgets.QCheckBox(self.groupBox)
-        self.checkBox.setGeometry(QtCore.QRect(20, 20, 75, 20))
-        self.checkBox.setObjectName("log(y-axis)")
+        
+        
         self.Btn_dir = QtWidgets.QPushButton(self.centralwidget)
         self.Btn_dir.setGeometry(QtCore.QRect(250, 20, 21, 23))
         self.Btn_dir.setObjectName("Btn_directory")
@@ -79,7 +77,6 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -88,8 +85,7 @@ class Ui_MainWindow(object):
         self.IBx_dir.setText(_translate("MainWindow", "directory"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Output"))
         self.comboBox.setItemText(1, _translate("MainWindow", "transfer"))
-        self.groupBox.setTitle(_translate("MainWindow", "Setup How to do"))
-        self.checkBox.setText(_translate("MainWindow", "Log(y-axis)"))
+        self.groupBox.setTitle(_translate("MainWindow", "Setup Conditions"))
         self.Btn_dir.setText(_translate("MainWindow", ".."))
         self.menu_File.setTitle(_translate("MainWindow", "&File"))
         self.menu_Help.setTitle(_translate("MainWindow", "&Help"))
