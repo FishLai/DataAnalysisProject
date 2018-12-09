@@ -28,7 +28,7 @@ def loadData(directory, files):
     allData = []
     for fn in files:
         path = os.path.join(directory, fn)
-        with open(path, newline="") as dfile:
+        with open(path, newline="", encoding = "UTF-8") as dfile:
             dataReader = csv.reader(dfile)
             data = []
             dataHead = 0
